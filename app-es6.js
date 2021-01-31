@@ -105,7 +105,18 @@ class Store {
     localStorage.setItem('books', JSON.stringify(books));
   }
 
-  static removeBook() {}
+  static removeBook(target, isbn) {
+    if (target.className === 'delete') {
+      const books = Store.getBooks();
+      books.splice(
+        books.findIndex((book) => book.isbn === isbn),
+        1
+      );
+      localStorage.setItem('books', JSON.stringify(books));
+    } else {
+      return;
+    }
+  }
 }
 
 // DOM LOAD EVENT -----------------------------------------
@@ -155,6 +166,9 @@ document.getElementById('bookList').addEventListener('click', (e) => {
   ui.deleteBook(e.target);
 
   // per rimuoverli ho bisogno di una chiave unica => ISBN, me la prendo con un po' di dom magia 🪄
-  Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+  Store.removeBook(
+    e.target,
+    e.target.parentElement.previousElementSibling.textContent
+  );
   e.preventDefault();
 });
