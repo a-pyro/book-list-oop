@@ -25,19 +25,64 @@
       crossorigin="anonymous"
     /> -->
     <style>
+      body {
+        background-color: #28afb0;
+        color: #f0fff0;
+      }
+      input[type='text'] {
+        background-color: #e4d6a6;
+      }
+
+      input[type='submit'] {
+        color: #e4d6a6;
+      }
+      a {
+        text-decoration: none;
+        color: #e4d6a6;
+      }
+
+      td:last-child {
+        text-align: center;
+      }
       .success,
       .error {
         color: #fff;
         padding: 5px;
         margin: 5px 0 15px 0;
+        border-radius: 8px;
+        border: 1px solid #e4d6a6;
+        text-align: center;
       }
 
       .success {
-        background: green;
+        background: #3e8914;
       }
 
       .error {
-        background: red;
+        background: #dd6e42;
+      }
+
+      .start {
+        transform: translateX(-1000px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+      .show {
+        transform: translateX(0);
+        opacity: 1;
+        transition: all 0.3s ease;
+      }
+      .fade-out {
+        transform: translateX(+1000px);
+        opacity: 0;
+        transition: all 0.3s ease;
+      }
+
+      .move-wrap-down {
+        transform: translateY(50px);
+      }
+      .wrapper {
+        transition: all 0.2s ease;
       }
     </style>
 
@@ -45,39 +90,41 @@
   </head>
   <body>
     <main class="container">
-      <h1>Add Book</h1>
-      <form id="bookForm">
-        <section>
-          <label for="title">title</label>
-          <input type="text" id="title" class="u-full-width" />
-        </section>
-        <section>
-          <label for="author">author</label>
-          <input type="text" id="author" class="u-full-width" />
-        </section>
-        <section>
-          <label for="isbn">isbn #</label>
-          <input type="text" id="isbn" class="u-full-width" />
-        </section>
-        <div>
-          <input type="submit" value="submit" class="u-full-width" />
-        </div>
-      </form>
+      <h1>Add Book 📖</h1>
+      <div class="wrapper">
+        <form id="bookForm">
+          <section>
+            <label for="title">title</label>
+            <input type="text" id="title" class="u-full-width" />
+          </section>
+          <section>
+            <label for="author">author</label>
+            <input type="text" id="author" class="u-full-width" />
+          </section>
+          <section>
+            <label for="isbn">isbn #</label>
+            <input type="text" id="isbn" class="u-full-width" />
+          </section>
+          <div>
+            <input type="submit" value="submit" class="u-full-width" />
+          </div>
+        </form>
 
-      <table class="u-full-width">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Isbn</th>
-            <th></th>
-          </tr>
-        </thead>
-        <!-----------------  body where books will go  ----------------------->
-        <!----------------------------------------------------------------->
+        <table class="u-full-width">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Isbn</th>
+              <th></th>
+            </tr>
+          </thead>
+          <!-----------------  body where books will go  ------->
+          <!------------------------->
 
-        <tbody id="bookList"></tbody>
-      </table>
+          <tbody id="bookList"></tbody>
+        </table>
+      </div>
     </main>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
@@ -86,7 +133,7 @@
       integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
       crossorigin="anonymous"
     ></script> -->
-    <script src="app.js"></script>
-    <!-- <script src="app-es6.js"></script> -->
+    <!-- <script src="app.js"></script> -->
+    <script src="app-es6.js"></script>
   </body>
 </html>
