@@ -25,10 +25,14 @@
       crossorigin="anonymous"
     /> -->
     <style>
+      :root {
+        --notification-speed: 0.2s;
+      }
       body {
         background-color: #28afb0;
         color: #f0fff0;
       }
+
       input[type='text'] {
         background-color: #e4d6a6;
       }
@@ -72,17 +76,39 @@
         opacity: 1;
         transition: all 0.3s ease;
       }
+
       .fade-out {
         transform: translateX(+1000px);
         opacity: 0;
         transition: all 0.3s ease;
       }
 
-      .move-wrap-down {
-        transform: translateY(50px);
+      /* animazioni notifiche */
+
+      .notifications {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
-      .wrapper {
-        transition: all 0.2s ease;
+
+      .notification-start {
+        transform: translateY(-1000px);
+        transition: all var(--notification-speed) ease-in-out;
+      }
+      .notification-in {
+        transform: translateY(0);
+
+        transition: all var(--notification-speed) ease-in-out;
+      }
+      .notification-end {
+        transform: translateY(-1000px);
+        transition: all var(--notification-speed) ease-in-out;
+      }
+
+      /* to remove an already triggered noti */
+      .notification-get-out {
+        transform: translateX(1000px);
+        transition: all var(--notification-speed) ease-in-out;
       }
     </style>
 
@@ -90,7 +116,10 @@
   </head>
   <body>
     <main class="container">
-      <h1>Add Book 📖</h1>
+      <section class="notifications">
+        <h1>Add Book 📖</h1>
+      </section>
+
       <div class="wrapper">
         <form id="bookForm">
           <section>

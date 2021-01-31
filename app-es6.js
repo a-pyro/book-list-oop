@@ -7,11 +7,13 @@ class Book {
 }
 
 class UI {
-  addBookToList(book) {
+  addBookToList(book, timeout) {
     const list = document.getElementById('bookList');
 
     // creo elemento
     const row = document.createElement('tr');
+
+    row.className = 'start';
 
     // inserisco le colonne generando html
     row.innerHTML = `
@@ -20,42 +22,56 @@ class UI {
   <td>${book.isbn}</td>
   <td><a  href="#" class="delete">X</a></td>
   `;
+
     // appendo
     list.appendChild(row);
+
+    // timeout viene calcolato nel metodo statico Store.displayBooks()
+    // quindi aumenta di mezzo secondo ad ogni item
+    // serve convertirlo in tempo per inserire l'effetto di translate da sinistra
+
+    setTimeout(() => {
+      row.classList.remove('start');
+      row.classList.add('show');
+    }, timeout);
   }
 
   showAlert(message, className) {
-    // costruisco elemento
-    const alert = document.createElement('div');
+    // check if there is already a notification active
+    const notifications = document.querySelector('.notifications'); //prendo parente
+    const alert = document.querySelector('.alert');
+    //se c'è già => LOGGO c'è già
+    if (alert) {
+      console.log('gia notifica');
+    } else {
+      // costruisco elemento
+      const alert = document.createElement('span');
 
-    // aggiungo classe
-    alert.className = `alert ${className} start`;
+      // aggiungo classe
+      alert.className = `alert ${className} notification-start`;
 
-    // Aggiungo testo
-    alert.appendChild(document.createTextNode(message));
+      // Aggiungo testo
+      alert.appendChild(document.createTextNode(message));
 
-    // entro nel dom
-    const container = document.querySelector('.container'); //prendo parente
-    const wrapper = document.querySelector('.wrapper');
+      // entro nel dom 🚀
+      notifications.appendChild(alert);
 
-    container.insertBefore(alert, wrapper);
-    wrapper.classList.add('move-wrap-down');
-    // add show animation
-    setTimeout(() => {
-      alert.classList.remove('start');
-      alert.classList.add('show');
-    }, 100);
-
-    // sparisce dopo time
-    setTimeout(() => {
-      alert.classList.remove('show');
-      alert.classList.add('fade-out');
-
+      // add show animation
       setTimeout(() => {
-        alert.remove();
-        wrapper.classList.remove('move-wrap-down');
+        alert.classList.remove('notification-start');
+        alert.classList.add('notification-in');
       }, 100);
-    }, 3000);
+
+      // sparisce dopo time
+      setTimeout(() => {
+        alert.classList.remove('notification-in');
+        alert.classList.add('notification-end');
+
+        setTimeout(() => {
+          alert.remove();
+        }, 100);
+      }, 3000);
+    }
   }
 
   deleteBook(target) {
@@ -87,13 +103,19 @@ class Store {
     return JSON.parse(localStorage.getItem('books')) ?? [];
   }
 
-  static displayBooks() {
+  static displayBooks(timeMilliseconds) {
     const books = Store.getBooks();
+    const ui = new UI();
 
-    books.forEach((book) => {
-      const ui = new UI();
-      ui.addBookToList(book);
+    // passo timeMilliseconds con cui calcolo i ms per il timeout dell'animazione in ui.addBookToList
+    books.forEach((book, idx) => {
+      // uso indice per avere un timeout che cresce ad ogni iterazione
+      const timeout = idx * timeMilliseconds;
+      ui.addBookToList(book, timeout);
     });
+    if (books.length > 0) {
+      ui.showAlert('Books Loaded, Welcome Back', 'success');
+    }
   }
 
   static addBook(book) {
@@ -120,7 +142,8 @@ class Store {
 }
 
 // DOM LOAD EVENT -----------------------------------------
-document.addEventListener('DOMContentLoaded', Store.displayBooks);
+// qui setto il tempo dell'animazione per caricare la lista
+document.addEventListener('DOMContentLoaded', Store.displayBooks(50));
 
 // EVENTI PER AGGIUNGERE
 document.getElementById('bookForm').addEventListener('submit', function (e) {
