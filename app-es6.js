@@ -92,6 +92,15 @@ class UI {
     document.getElementById('isbn').value = '';
     document.getElementById('title').focus();
   }
+
+  zoomOutMobile() {
+    const viewport = document.querySelector('meta[name="viewport"]');
+
+    if (viewport) {
+      viewport.content = 'initial-scale=1';
+      viewport.content = 'width=device-width';
+    }
+  }
 }
 
 class Store {
@@ -177,8 +186,8 @@ document.getElementById('bookForm').addEventListener('submit', function (e) {
 
     // pulizia ui
     ui.clearFields();
+    ui.zoomOutMobile();
   }
-
   e.preventDefault();
 });
 
